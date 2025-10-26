@@ -14,7 +14,7 @@ public class DatabaseConnector {
     // Đảm bảo tên database "data_base" đã đúng
     private static final String DB_URL = "jdbc:mysql://localhost:3306/data_base";
     // Đảm bảo username đã đúng 
-    private static final String USER = "shop_management";
+    private static final String USER = "root";
     // Đảm bảo bạn đã nhập đúng mật khẩu MySQL của mình
     private static final String PASS = "611111"; // Giữ nguyên mật khẩu của bạn
     // ------------------------------------------

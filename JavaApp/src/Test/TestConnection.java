@@ -1,38 +1,57 @@
-// Đảm bảo package name ở đây khớp với cây thư mục của bạn
-package Test; 
+package Test;
 
-// SỬA LỖI: Import lớp DatabaseConnector từ gói "utils" (gói ngang cấp)
+// Import các lớp cần thiết
+import dao.ProductDAO;
+import model.Product;
 import utils.DatabaseConnector;
 import java.sql.Connection;
+import java.util.List;
 
 /**
- * Đây là lớp dùng để kiểm tra kết nối tới database.
- * Nó không phải là phần chính của ứng dụng, chỉ dùng để test.
+ * Lớp này dùng để kiểm tra kết nối VÀ kiểm tra các chức năng DAO.
  */
 public class TestConnection {
 
     public static void main(String[] args) {
-        System.out.println("Dang thu ket noi den Database...");
         
-        // Goi phuong thuc getConnection() tu lop DatabaseConnector
-        Connection conn = DatabaseConnector.getConnection();
+        System.out.println("--- BƯỚC 1: KIỂM TRA KẾT NỐI DATABASE ---");
         
-        // Kiem tra ket qua
-        if (conn != null) {
-            System.out.println("==========================================");
-            System.out.println("KET NOI THANH CONG!");
-            System.out.println("Ban da san sang de lam viec voi database.");
-            System.out.println("==========================================");
-            try {
-                conn.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+        // Bước 1: Kiểm tra kết nối
+        // Chúng ta gọi getConnection() một lần để đảm bảo nó hoạt động
+        try (Connection conn = DatabaseConnector.getConnection()) {
+            if (conn != null) {
+                System.out.println("KET NOI THANH CONG!");
+                System.out.println("Ban da san sang de lam viec voi database.");
+                System.out.println("----------------------------------------");
+                
+                // Bước 2: Nếu kết nối thành công, kiểm tra DAO
+                System.out.println("--- BƯỚC 2: KIỂM TRA ProductDAO.getAllProducts() ---");
+                
+                // Tạo một đối tượng ProductDAO
+                ProductDAO productDAO = new ProductDAO();
+                
+                // Gọi phương thức để lấy tất cả sản phẩm
+                List<Product> productList = productDAO.getAllProducts();
+                
+                // Kiểm tra kết quả
+                if (productList.isEmpty()) {
+                    System.err.println("Lỗi: Không tìm thấy sản phẩm nào, hoặc có lỗi khi lấy dữ liệu.");
+                } else {
+                    System.out.println("Tim thay " + productList.size() + " san pham:");
+                    // In từng sản phẩm ra
+                    for (Product p : productList) {
+                        System.out.println(p); // Gọi phương thức toString() của Product
+                    }
+                }
+                
+            } else {
+                System.err.println("KET NOI THAT BAI!");
+                System.err.println("Vui long kiem tra lai DB_URL, USER, va PASS trong file DatabaseConnector.java");
             }
-        } else {
-            System.err.println("------------------------------------------");
-            System.err.println("KET NOI THAT BAI!");
-            System.err.println("Vui long kiem tra lai DB_URL, USER, va PASS trong file DatabaseConnector.java");
-            System.err.println("------------------------------------------");
+        } catch (Exception e) {
+            System.err.println("Da xay ra loi ngoai le!");
+            e.printStackTrace();
         }
     }
 }
+

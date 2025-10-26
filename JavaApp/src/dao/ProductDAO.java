@@ -1,42 +1,47 @@
-// BẮT BUỘC: Dòng này phải là dòng đầu tiên
 package dao;
 
-// Import các lớp cần thiết
+import model.Product;
+import utils.DatabaseConnector; // Đảm bảo import lớp kết nối
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Product; // Import lớp Product từ gói model
-import utils.DatabaseConnector; // Import lớp kết nối
 
 /**
- * Lớp này chịu trách nhiệm truy vấn cơ sở dữ liệu cho bảng 'products'.
+ * Lớp này chịu trách nhiệm cho tất cả các thao tác CSDL
+ * liên quan đến bảng 'products'.
  */
 public class ProductDAO {
 
-    // Phương thức để lấy tất cả sản phẩm từ database
+    /**
+     * Phương thức này lấy TẤT CẢ sản phẩm từ database.
+     * @return một List (danh sách) các đối tượng Product.
+     */
     public List<Product> getAllProducts() {
         List<Product> productList = new ArrayList<>();
         // Câu lệnh SQL để chọn tất cả sản phẩm
-        String sql = "SELECT * FROM products"; 
+        String sql = "SELECT * FROM products";
 
-        // Sử dụng try-with-resources để tự động đóng kết nối
+        // Sử dụng try-with-resources để đảm bảo kết nối được đóng tự động
         try (Connection conn = DatabaseConnector.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
-            // Lặp qua từng dòng kết quả trả về
+            // Lặp qua từng dòng kết quả trả về từ database
             while (rs.next()) {
+                // Đọc dữ liệu từ các cột
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                double price = rs.getDouble("price");
+                int stock = rs.getInt("stock");
+
                 // Tạo một đối tượng Product từ dữ liệu
-                Product product = new Product(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getDouble("price"),
-                    rs.getInt("stock")
-                );
-                // Thêm sản phẩm vào danh sách
+                Product product = new Product(id, name, price, stock);
+                
+                // Thêm đối tượng Product vào danh sách
                 productList.add(product);
             }
         } catch (SQLException e) {
@@ -44,12 +49,13 @@ public class ProductDAO {
             e.printStackTrace();
         }
         
-        return productList; // Trả về danh sách
+        // Trả về danh sách (có thể rỗng nếu không tìm thấy gì hoặc có lỗi)
+        return productList;
     }
-    
-    // (Sau này chúng ta sẽ thêm các hàm add, update, delete ở đây)
-    // public boolean addProduct(Product product) { ... }
-    // public boolean updateProduct(Product product) { ... }
-    // public boolean deleteProduct(int productId) { ... }
+
+    // --- CÁC PHƯƠNG THỨC KHÁC SẼ ĐƯỢC THÊM SAU ---
+    // public void addProduct(Product product) { ... }
+    // public void updateProduct(Product product) { ... }
+    // public void deleteProduct(int productId) { ... }
 }
 
