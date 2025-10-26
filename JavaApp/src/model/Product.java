@@ -1,8 +1,7 @@
-// BẮT BUỘC: Dòng này phải là dòng đầu tiên
 package model;
 
 /**
- * Lớp này đại diện cho một Sản phẩm (giống hệt cấu trúc bảng 'products')
+ * Lớp này đại diện cho một Sản phẩm (tương ứng với bảng 'products' trong CSDL).
  */
 public class Product {
     private int id;
@@ -10,7 +9,11 @@ public class Product {
     private double price;
     private int stock;
 
-    // Constructor (hàm dựng)
+    // Constructor (Hàm dựng) rỗng (cần cho một số thư viện sau này)
+    public Product() {
+    }
+    
+    // Constructor (Hàm dựng) đầy đủ
     public Product(int id, String name, double price, int stock) {
         this.id = id;
         this.name = name;
@@ -18,42 +21,51 @@ public class Product {
         this.stock = stock;
     }
 
-    // Các phương thức Getters và Setters
+    // Các phương thức "get"
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public double getPrice() {
         return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public int getStock() {
         return stock;
     }
 
+    // Các phương thức "set" (Chúng ta sẽ cần sau này)
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public void setStock(int stock) {
         this.stock = stock;
     }
 
-    // Ghi đè phương thức toString() để hiển thị tên trong JList/JComboBox
+    /**
+     * PHƯƠNG THỨC QUAN TRỌNG:
+     * Ghi đè phương thức toString() để in thông tin sản phẩm ra cho đẹp.
+     * File TestConnection.java sẽ gọi phương thức này.
+     */
     @Override
     public String toString() {
-        return this.name + " (" + this.price + " VND)";
+        return "Product [ID=" + id + 
+               ", Ten='" + name + '\'' + 
+               ", Gia=" + price + 
+               ", Kho=" + stock + ']';
     }
 }
+
