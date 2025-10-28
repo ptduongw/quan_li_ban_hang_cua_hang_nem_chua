@@ -1,70 +1,90 @@
 package model;
 
 /**
- * Lớp này đại diện cho một Sản phẩm (tương ứng với bảng 'product' trong CSDL).
- * ĐÃ CẬP NHẬT để dùng "quantity" thay vì "stock".
+ * Lớp này đại diện cho một Sản phẩm (ánh xạ tới bảng 'product').
+ * Đã sửa lại tên cột stock -> quantity và thêm unit, note.
  */
 public class Product {
     private int id;
     private String name;
+    private String unit; // Đơn vị tính (ví dụ: "chục cái", "kg", "piece")
     private double price;
-    private int quantity; // SỬA LỖI: Đổi tên từ stock -> quantity
-    
-    // Bổ sung: Thêm cột 'unit' (đơn vị) như trong SQL của bạn
-    private String unit; 
+    private int quantity; // Đổi tên từ stock
+    private String note;  // Ghi chú thêm
 
-    // Constructor rỗng
-    public Product() {
-    }
-    
-    // Constructor (Hàm dựng) đầy đủ (Dùng khi ĐỌC từ CSDL)
-    public Product(int id, String name, double price, int quantity) {
+    // Hàm dựng đầy đủ (thường dùng khi đọc từ database)
+    public Product(int id, String name, String unit, double price, int quantity, String note) {
         this.id = id;
         this.name = name;
+        this.unit = unit;
         this.price = price;
-        this.quantity = quantity; // SỬA LỖI: Đổi tên từ stock
+        this.quantity = quantity;
+        this.note = note;
     }
-    
-    // Constructor (Hàm dựng) (Dùng khi THÊM sản phẩm mới)
-    public Product(String name, double price, int quantity) {
+
+    // Hàm dựng để tạo sản phẩm mới (ID sẽ tự tăng) - **HÀM NÀY LÀ QUAN TRỌNG**
+    public Product(String name, String unit, double price, int quantity, String note) {
         this.name = name;
+        this.unit = unit;
         this.price = price;
-        this.quantity = quantity; // SỬA LỖI: Đổi tên từ stock
+        this.quantity = quantity;
+        this.note = note;
     }
 
-    // Các phương thức "get"
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public double getPrice() { return price; }
-    
-    // SỬA LỖI: Đổi tên hàm
-    public int getQuantity() { return quantity; } 
-    
-    // (Hàm mới)
-    public String getUnit() { return unit; }
+    // Getters and Setters (Bạn có thể tự tạo bằng NetBeans: Chuột phải -> Insert Code -> Getter and Setter...)
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    // Các phương thức "set"
-    public void setId(int id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setPrice(double price) { this.price = price; }
-    
-    // SỬA LỖI: Đổi tên hàm và tham số
-    public void setQuantity(int quantity) { this.quantity = quantity; } 
-    
-    // (Hàm mới)
-    public void setUnit(String unit) { this.unit = unit; }
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    /**
-     * Dùng để in thông tin sản phẩm ra cho dễ đọc (dùng trong TestConnection)
-     */
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    // Phương thức toString() để in thông tin sản phẩm ra cho đẹp
     @Override
     public String toString() {
-        return "Product [ID=" + id + 
-               ", Ten='" + name + '\'' + 
-               ", Gia=" + price + 
-               ", Kho=" + quantity + ']'; // SỬA LỖI: Đổi tên từ stock
+        return "Product [ID=" + id + ", Ten='" + name + '\'' + ", Don vi='" + unit + '\'' +
+               ", Gia=" + String.format("%,.0f", price) + ", Kho=" + quantity + ", Ghi chu='" + note + '\'' + ']';
     }
 }
 
