@@ -1,17 +1,21 @@
 package Test;
 
-import dao.CustomerDAO; // Thêm import này
+import dao.CustomerDAO;
 import dao.OrderDAO;
 import dao.ProductDAO;
+import dao.ProfitDAO; // <<< THÊM IMPORT NÀY
 import java.sql.Connection;
+import java.util.Date; // <<< THÊM IMPORT NÀY
 import java.util.List;
-import model.Customer; // Thêm import này
+import model.Customer;
 import model.Order;
 import model.OrderDetail;
 import model.Product;
+import model.Profit; // <<< THÊM IMPORT NÀY
 import utils.DatabaseConnector;
 import java.util.ArrayList;
 import java.sql.SQLException;
+
 
 /**
  * Lớp này dùng để kiểm tra kết nối tới database và các hàm CRUD cơ bản.
@@ -39,11 +43,14 @@ public class TestConnection {
             testAddOrder();
 
             // --- BƯỚC 7: KIỂM TRA CustomerDAO CRUD ---
-            testCustomerCRUD(); // <<< GỌI HÀM TEST MỚI
+            testCustomerCRUD();
+
+            // --- BƯỚC 8: KIỂM TRA ProfitDAO CRUD ---
+            testProfitCRUD(); // <<< GỌI HÀM TEST MỚI
 
             try {
-                conn.close();
-            } catch (Exception e) {
+                conn.close(); // Đóng kết nối ở cuối cùng
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
@@ -64,7 +71,7 @@ public class TestConnection {
         }
     }
 
-    // --- CÁC HÀM TEST ---
+    // --- CÁC HÀM TEST (Product, Order, Customer giữ nguyên như cũ) ---
 
     public static void testGetAllProducts() {
         System.out.println("\n--- BƯỚC 2: TEST READ (getAllProducts) ---");
@@ -218,7 +225,6 @@ public class TestConnection {
         System.out.println("--- KẾT THÚC BƯỚC 6 ---");
     }
 
-    // --- HÀM TEST MỚI CHO CUSTOMER ---
     public static void testCustomerCRUD() {
         System.out.println("\n--- BƯỚC 7: TEST CUSTOMER CRUD ---");
         CustomerDAO customerDAO = new CustomerDAO();
@@ -249,7 +255,6 @@ public class TestConnection {
             } else {
                 System.err.println("         Lỗi: Không thể lấy lại khách hàng vừa thêm bằng ID.");
             }
-            // Thử tìm bằng SĐT
             Customer foundByPhone = customerDAO.getCustomerByPhone("0333444555");
              if (foundByPhone != null && foundByPhone.getId() == newCustomerId) {
                 System.out.println("         -> Tìm thấy khách hàng bằng SĐT thành công.");
@@ -261,7 +266,6 @@ public class TestConnection {
             System.err.println("      ❌ Them khach hang moi THAT BAI!");
         }
 
-        // Chỉ chạy Update và Delete nếu Add thành công
         if (newCustomerId != -1) {
             // 7.3: Cập nhật khách hàng
             System.out.println("\n   7.3: Cập nhật khách hàng...");
@@ -300,5 +304,56 @@ public class TestConnection {
         }
         System.out.println("--- KẾT THÚC BƯỚC 7 ---");
     }
+
+    // --- HÀM TEST MỚI CHO PROFIT ---
+    public static void testProfitCRUD() {
+        System.out.println("\n--- BƯỚC 8: TEST PROFIT CRUD ---");
+        ProfitDAO profitDAO = new ProfitDAO();
+
+        // 8.1: Lấy danh sách bản ghi lợi nhuận hiện có
+        System.out.println("   8.1: Lấy danh sách bản ghi lợi nhuận hiện có...");
+        List<Profit> currentProfits = profitDAO.getAllProfitRecords();
+        if (currentProfits.isEmpty()) {
+            System.out.println("      -> Chưa có bản ghi lợi nhuận nào.");
+        } else {
+            System.out.println("      -> Tìm thấy " + currentProfits.size() + " bản ghi:");
+            for (Profit p : currentProfits) {
+                System.out.println("         " + p.toString());
+            }
+        }
+
+        // 8.2: Thêm bản ghi lợi nhuận mới cho ngày hôm nay
+        System.out.println("\n   8.2: Thêm bản ghi lợi nhuận mới cho hôm nay...");
+        // Giả sử doanh thu và chi phí hôm nay
+        double todayRevenue = 750000.0;
+        double todayCostMeat = 300000.0;
+        double todayCostSpices = 80000.0;
+        double todayCostLeaf = 30000.0;
+        double todayCostLabor = 100000.0;
+
+        Profit newProfitRecord = new Profit(new Date(), // Lấy ngày hiện tại
+                                            todayRevenue,
+                                            todayCostMeat,
+                                            todayCostSpices,
+                                            todayCostLeaf,
+                                            todayCostLabor);
+        // Lợi nhuận ròng (netProfit) sẽ tự động được tính trong constructor của Profit
+
+        boolean addSuccess = profitDAO.addProfitRecord(newProfitRecord);
+        if (addSuccess) {
+            System.out.println("      ✅ Them thanh cong ban ghi loi nhuan moi!");
+            // Lấy lại danh sách để xem bản ghi mới
+            System.out.println("\n      -> Danh sách lợi nhuận sau khi thêm:");
+            List<Profit> updatedProfits = profitDAO.getAllProfitRecords();
+            for (Profit p : updatedProfits) {
+                System.out.println("         " + p.toString());
+            }
+        } else {
+            System.err.println("      ❌ Them ban ghi loi nhuan moi THAT BAI!");
+        }
+
+        System.out.println("--- KẾT THÚC BƯỚC 8 ---");
+    }
+
 }
 
