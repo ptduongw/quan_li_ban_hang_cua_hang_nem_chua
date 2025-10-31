@@ -1,22 +1,24 @@
-// BẮT BUỘC: Dòng này phải là dòng đầu tiên, khớp với tên package
 package App;
 
-// Import lớp MainView từ gói view
-import view.MainView;
+import javax.swing.SwingUtilities;
+import view.MainView; // Import lop MainView tu goi 'view'
 
 /**
- * Lớp này là điểm khởi đầu (main entry point) của toàn bộ ứng dụng.
- * Nhiệm vụ duy nhất của nó là tạo và hiển thị cửa sổ MainView.
+ * Lop nay la DIEM KHOI DAU (main entry point) cua toan bo ung dung.
+ * Nhiem vu duy nhat cua no la tao va hien thi cua so chinh (MainView).
  */
 public class App {
-    
+
     public static void main(String[] args) {
-        // Đây là cách tiêu chuẩn và an toàn để khởi chạy một ứng dụng Swing
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        // Day la cach tieu chuan va an toan de khoi chay mot ung dung Swing
+        // No dam bao rang giao dien duoc tao tren luong (thread) su kien cua Swing
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                // Tạo một đối tượng MainView và cho nó hiển thị
+                // Tao mot doi tuong MainView moi va cho no hien thi
                 new MainView().setVisible(true);
             }
         });
     }
 }
+
