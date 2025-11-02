@@ -1,13 +1,12 @@
 package App;
 
 import javax.swing.SwingUtilities;
-// Chung ta se cho no chay thang SalesView de test giao dien
-import view.SalesView; 
-// import view.MainView; // Chung ta se dung file nay sau
+import view.ProductManagementView; // <<< IMPORT FILE MOI
+// import view.SalesView; // (Tam thoi khong dung file nay)
 
 /**
  * Lop nay la DIEM KHOI DAU (main entry point) cua toan bo ung dung.
- * Nhiem vu duy nhat cua no la tao va hien thi cua so chinh.
+ * (File nay khong dau de tranh loi font)
  */
 public class App {
 
@@ -16,11 +15,11 @@ public class App {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                // Hien tai, chung ta cho no chay thang SalesView de lam viec
-                new SalesView().setVisible(true);
+                // Tam thoi an cua so Ban Hang (SalesView)
+                // new SalesView().setVisible(true);
                 
-                // Sau nay, khi ban lam xong MainView, ban se doi lai thanh:
-                // new MainView().setVisible(true);
+                // <<< CHAY CUA SO QUAN LY SAN PHAM DE TEST >>>
+                new ProductManagementView().setVisible(true);
             }
         });
     }

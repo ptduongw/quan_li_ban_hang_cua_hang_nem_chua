@@ -27,22 +27,326 @@ public class ProductManagementView extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        scrollPane = new javax.swing.JScrollPane();
+        productTable = new javax.swing.JTable();
+        southPanel = new javax.swing.JPanel();
+        formPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtPrice = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtName = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtQuantity = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtUnit = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtNote = new javax.swing.JTextField();
+        buttonPanel = new javax.swing.JPanel();
+        btnAdd = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        productTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Tên Sản Phẩm", "Đơn vị", "Giá", "Số lượng", "Ghi chú"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        productTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        scrollPane.setViewportView(productTable);
+
+        southPanel.setLayout(new java.awt.BorderLayout());
+
+        formPanel.setLayout(new java.awt.GridBagLayout());
+
+        jLabel1.setText("ID:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        formPanel.add(jLabel1, gridBagConstraints);
+
+        txtId.setEditable(false);
+        txtId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        formPanel.add(txtId, gridBagConstraints);
+
+        jLabel2.setText("Giá (*):");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        formPanel.add(jLabel2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        formPanel.add(txtPrice, gridBagConstraints);
+
+        jLabel3.setText("Tên SP (*):");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        formPanel.add(jLabel3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        formPanel.add(txtName, gridBagConstraints);
+
+        jLabel4.setText("Số lượng:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        formPanel.add(jLabel4, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        formPanel.add(txtQuantity, gridBagConstraints);
+
+        jLabel5.setText("Đơn vị:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        formPanel.add(jLabel5, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        formPanel.add(txtUnit, gridBagConstraints);
+
+        jLabel6.setText("Ghi chú:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        formPanel.add(jLabel6, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        formPanel.add(txtNote, gridBagConstraints);
+
+        southPanel.add(formPanel, java.awt.BorderLayout.PAGE_START);
+
+        buttonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
+
+        btnAdd.setText("Thêm");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(btnAdd);
+
+        btnUpdate.setText("Cập nhật");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(btnUpdate);
+
+        btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(btnDelete);
+
+        btnClear.setText("Làm mới Form");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(btnClear);
+
+        southPanel.add(buttonPanel, java.awt.BorderLayout.SOUTH);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(southPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(10, 10, 10)
+                    .addComponent(southPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        try {
+            // 1. Lấy dữ liệu từ form
+            String name = txtName.getText();
+            String unit = txtUnit.getText();
+            double price = Double.parseDouble(txtPrice.getText());
+            int quantity = Integer.parseInt(txtQuantity.getText());
+            String note = txtNote.getText();
+
+            // 2. Gọi Controller
+            // (Controller đã có validation, nhưng ta cũng có thể kiểm tra cơ bản ở đây)
+            int newId = productController.addProduct(name, unit, price, quantity, note);
+
+            // 3. Xử lý kết quả
+            if (newId != -1) {
+                JOptionPane.showMessageDialog(ProductManagementView.this,
+                    "Thêm sản phẩm thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
+                loadProductData(); // Tải lại bảng
+                clearForm();       // Xóa form
+            } else {
+                // Lỗi đã được in ra ở console (trong Controller)
+                JOptionPane.showMessageDialog(ProductManagementView.this,
+                    "Thêm sản phẩm thất bại. (Tên và Giá là bắt buộc, Giá > 0, SL >= 0)",
+                    "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (NumberFormatException ex) {
+            // Bắt lỗi nếu người dùng nhập chữ vào ô Giá hoặc Số lượng
+            JOptionPane.showMessageDialog(ProductManagementView.this,
+                "Giá và Số lượng phải là số hợp lệ.",
+                "Lỗi Định Dạng", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        try {
+            // 1. Lấy dữ liệu từ form
+            int id = Integer.parseInt(txtId.getText()); // ID là bắt buộc
+            String name = txtName.getText();
+            String unit = txtUnit.getText();
+            double price = Double.parseDouble(txtPrice.getText());
+            int quantity = Integer.parseInt(txtQuantity.getText());
+            String note = txtNote.getText();
+
+            // 2. Gọi Controller
+            boolean success = productController.updateProduct(id, name, unit, price, quantity, note);
+
+            // 3. Xử lý kết quả
+            if (success) {
+                JOptionPane.showMessageDialog(ProductManagementView.this,
+                    "Cập nhật sản phẩm thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
+                loadProductData(); // Tải lại bảng
+                clearForm();       // Xóa form
+            } else {
+                JOptionPane.showMessageDialog(ProductManagementView.this,
+                    "Cập nhật sản phẩm thất bại. (Tên và Giá là bắt buộc, Giá > 0)",
+                    "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(ProductManagementView.this,
+                "ID, Giá và Số lượng phải là số hợp lệ.",
+                "Lỗi Định Dạng", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        try {
+            int id = Integer.parseInt(txtId.getText()); // Lấy ID từ form
+
+            // 1. Yêu cầu xác nhận trước khi xóa
+            int confirm = JOptionPane.showConfirmDialog(ProductManagementView.this,
+                "Bạn có chắc chắn muốn xóa sản phẩm này? (ID: " + id + ")",
+                "Xác Nhận Xóa",
+                JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                // 2. Gọi Controller
+                boolean success = productController.deleteProduct(id);
+
+                // 3. Xử lý kết quả
+                if (success) {
+                    JOptionPane.showMessageDialog(ProductManagementView.this,
+                        "Xóa sản phẩm thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
+                    loadProductData();
+                    clearForm();
+                } else {
+                    // Lý do thất bại phổ biến là do ràng buộc khóa ngoại
+                    // (sản phẩm đã có trong một đơn hàng nào đó)
+                    JOptionPane.showMessageDialog(ProductManagementView.this,
+                        "Xóa sản phẩm thất bại. (Có thể sản phẩm đã tồn tại trong một đơn hàng).",
+                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(ProductManagementView.this,
+                "ID sản phẩm không hợp lệ.",
+                "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        // TODO add your handling code here:
+        clearForm();
+    }//GEN-LAST:event_btnClearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -70,5 +374,26 @@ public class ProductManagementView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JPanel buttonPanel;
+    private javax.swing.JPanel formPanel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JTable productTable;
+    private javax.swing.JScrollPane scrollPane;
+    private javax.swing.JPanel southPanel;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtNote;
+    private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtQuantity;
+    private javax.swing.JTextField txtUnit;
     // End of variables declaration//GEN-END:variables
 }

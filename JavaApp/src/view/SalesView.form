@@ -74,7 +74,7 @@
       <SubComponents>
         <Component class="javax.swing.JTextField" name="txtSearchProduct">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jTextField1"/>
+            <Property name="text" type="java.lang.String" value="S&#x1ea2;N PH&#x1ea8;M"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane2">
@@ -112,11 +112,11 @@
                           <Component id="jScrollPane1" min="-2" pref="379" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="txtCustomerPhone" min="-2" pref="71" max="-2" attributes="0"/>
-                              <Component id="txtCustomerName" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
                               <Component id="btnFindCustomer" max="32767" attributes="0"/>
                               <Component id="lblTotalAmount" alignment="0" max="32767" attributes="0"/>
-                              <Component id="btnPay" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtCustomerName" alignment="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="txtCustomerPhone" alignment="0" max="32767" attributes="0"/>
+                              <Component id="btnPay" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Component id="btnRemoveItem" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -173,23 +173,32 @@
         </Container>
         <Component class="javax.swing.JButton" name="btnRemoveItem">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jButton1"/>
+            <Property name="text" type="java.lang.String" value="DELETE"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoveItemActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtCustomerPhone">
           <Properties>
-            <Property name="text" type="java.lang.String" value="SDT"/>
+            <Property name="text" type="java.lang.String" value="PHONE"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtCustomerName">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Ten Khach"/>
+            <Property name="text" type="java.lang.String" value="CUSTOMER"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCustomerNameActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnFindCustomer">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Tim KH"/>
+            <Property name="text" type="java.lang.String" value="FIND CUSTOMER"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFindCustomerActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblTotalAmount">
           <Properties>
@@ -200,6 +209,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Pay"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPayActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
