@@ -3,21 +3,113 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package view;
+import controller.ProductController;
+import model.Product;
+
+import javax.swing.*; // JFrame nằm trong này
+import javax.swing.table.DefaultTableModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 /**
  *
- * @author duong
+ * @author ADMIN
  */
 public class ProductManagementView extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProductManagementView.class.getName());
-
+    // --- Controller ---
+    private ProductController productController;
+    // --- Model ---
+    private DefaultTableModel tableModel;
     /**
      * Creates new form ProductManagementView
      */
     public ProductManagementView() {
         initComponents();
+        this.productController = new ProductController();
+        this.tableModel = (DefaultTableModel) productTable.getModel();
+        Dimension fieldSize = new Dimension(180, 30); // chiều rộng 180, cao 30px
+        txtId.setPreferredSize(fieldSize);
+        txtName.setPreferredSize(fieldSize);
+        txtUnit.setPreferredSize(fieldSize);
+        txtPrice.setPreferredSize(fieldSize);
+        txtQuantity.setPreferredSize(fieldSize);
+        txtNote.setPreferredSize(fieldSize);
+        updateButtonState(false);
+        addTableListener();
+        loadProductData();
     }
+    private void loadProductData() {
+        // Xóa dữ liệu cũ trên bảng
+        tableModel.setRowCount(0);
+
+        // Lấy danh sách sản phẩm từ controller
+        List<Product> products = productController.getAllProducts();
+        
+        // Thêm từng sản phẩm vào tableModel
+        for (Product p : products) {
+            tableModel.addRow(new Object[]{
+                p.getId(),
+                p.getName(),
+                p.getUnit(),
+                p.getPrice(),
+                p.getQuantity(),
+                p.getNote()
+            });
+        }
+    }
+    private void clearForm() {
+        txtId.setText("");
+        txtName.setText("");
+        txtUnit.setText("");
+        txtPrice.setText("");
+        txtQuantity.setText("");
+        txtNote.setText("");
+        productTable.clearSelection(); // Bỏ chọn dòng trên bảng
+        updateButtonState(false); // Cập nhật trạng thái nút (bật "Thêm", tắt "Sửa/Xóa")
+    }
+    /**
+     * Cập nhật trạng thái của các nút (Thêm, Sửa, Xóa)
+     * @param rowIsSelected True nếu có một dòng đang được chọn, False nếu không.
+     */
+    private void updateButtonState(boolean rowIsSelected) {
+        btnAdd.setEnabled(!rowIsSelected); // Bật "Thêm" nếu KHÔNG có dòng nào được chọn
+        btnUpdate.setEnabled(rowIsSelected); // Bật "Sửa" nếu CÓ dòng được chọn
+        btnDelete.setEnabled(rowIsSelected); // Bật "Xóa" nếu CÓ dòng được chọn
+    }
+
+
+    /**
+     * Gán các trình xử lý sự kiện (event listeners) cho các nút và bảng
+     */
+    private void addTableListener() {
+    productTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting() && productTable.getSelectedRow() != -1) {
+                int selectedRow = productTable.getSelectedRow();
+
+                // Lấy dữ liệu (Lưu ý: tableModel đã là biến của class)
+                txtId.setText(tableModel.getValueAt(selectedRow, 0).toString());
+                txtName.setText(tableModel.getValueAt(selectedRow, 1).toString());
+                txtUnit.setText(tableModel.getValueAt(selectedRow, 2).toString());
+                txtPrice.setText(tableModel.getValueAt(selectedRow, 3).toString());
+                txtQuantity.setText(tableModel.getValueAt(selectedRow, 4).toString());
+
+                // Xử lý null cho Ghi chú (để an toàn hơn)
+                Object noteObj = tableModel.getValueAt(selectedRow, 5);
+                txtNote.setText(noteObj != null ? noteObj.toString() : "");
+
+                updateButtonState(true);
+            }
+        }
+    });
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,6 +144,7 @@ public class ProductManagementView extends javax.swing.JFrame {
         btnClear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.BorderLayout(10, 10));
 
         productTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -74,6 +167,8 @@ public class ProductManagementView extends javax.swing.JFrame {
         });
         productTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         scrollPane.setViewportView(productTable);
+
+        getContentPane().add(scrollPane, java.awt.BorderLayout.CENTER);
 
         southPanel.setLayout(new java.awt.BorderLayout());
 
@@ -207,30 +302,7 @@ public class ProductManagementView extends javax.swing.JFrame {
 
         southPanel.add(buttonPanel, java.awt.BorderLayout.SOUTH);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(southPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(10, 10, 10)
-                    .addComponent(southPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        getContentPane().add(southPanel, java.awt.BorderLayout.SOUTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -239,114 +311,114 @@ public class ProductManagementView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIdActionPerformed
 
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        // TODO add your handling code here:
+        clearForm();
+    }//GEN-LAST:event_btnClearActionPerformed
+
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
         try {
-            // 1. Lấy dữ liệu từ form
-            String name = txtName.getText();
-            String unit = txtUnit.getText();
-            double price = Double.parseDouble(txtPrice.getText());
-            int quantity = Integer.parseInt(txtQuantity.getText());
-            String note = txtNote.getText();
+                    // 1. Lấy dữ liệu từ form
+                    String name = txtName.getText();
+                    String unit = txtUnit.getText();
+                    double price = Double.parseDouble(txtPrice.getText());
+                    int quantity = Integer.parseInt(txtQuantity.getText());
+                    String note = txtNote.getText();
 
-            // 2. Gọi Controller
-            // (Controller đã có validation, nhưng ta cũng có thể kiểm tra cơ bản ở đây)
-            int newId = productController.addProduct(name, unit, price, quantity, note);
+                    // 2. Gọi Controller
+                    // (Controller đã có validation, nhưng ta cũng có thể kiểm tra cơ bản ở đây)
+                    int newId = productController.addProduct(name, unit, price, quantity, note);
 
-            // 3. Xử lý kết quả
-            if (newId != -1) {
-                JOptionPane.showMessageDialog(ProductManagementView.this,
-                    "Thêm sản phẩm thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
-                loadProductData(); // Tải lại bảng
-                clearForm();       // Xóa form
-            } else {
-                // Lỗi đã được in ra ở console (trong Controller)
-                JOptionPane.showMessageDialog(ProductManagementView.this,
-                    "Thêm sản phẩm thất bại. (Tên và Giá là bắt buộc, Giá > 0, SL >= 0)",
-                    "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
+                    // 3. Xử lý kết quả
+                    if (newId != -1) {
+                        JOptionPane.showMessageDialog(ProductManagementView.this, 
+                                "Thêm sản phẩm thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
+                        loadProductData(); // Tải lại bảng
+                        clearForm();       // Xóa form
+                    } else {
+                        // Lỗi đã được in ra ở console (trong Controller)
+                        JOptionPane.showMessageDialog(ProductManagementView.this, 
+                                "Thêm sản phẩm thất bại. (Tên và Giá là bắt buộc, Giá > 0, SL >= 0)", 
+                                "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    }
 
-        } catch (NumberFormatException ex) {
-            // Bắt lỗi nếu người dùng nhập chữ vào ô Giá hoặc Số lượng
-            JOptionPane.showMessageDialog(ProductManagementView.this,
-                "Giá và Số lượng phải là số hợp lệ.",
-                "Lỗi Định Dạng", JOptionPane.ERROR_MESSAGE);
-        }
+                } catch (NumberFormatException ex) {
+                    // Bắt lỗi nếu người dùng nhập chữ vào ô Giá hoặc Số lượng
+                    JOptionPane.showMessageDialog(ProductManagementView.this, 
+                            "Giá và Số lượng phải là số hợp lệ.", 
+                            "Lỗi Định Dạng", JOptionPane.ERROR_MESSAGE);
+                }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
         try {
-            // 1. Lấy dữ liệu từ form
-            int id = Integer.parseInt(txtId.getText()); // ID là bắt buộc
-            String name = txtName.getText();
-            String unit = txtUnit.getText();
-            double price = Double.parseDouble(txtPrice.getText());
-            int quantity = Integer.parseInt(txtQuantity.getText());
-            String note = txtNote.getText();
+                    // 1. Lấy dữ liệu từ form
+                    int id = Integer.parseInt(txtId.getText()); // ID là bắt buộc
+                    String name = txtName.getText();
+                    String unit = txtUnit.getText();
+                    double price = Double.parseDouble(txtPrice.getText());
+                    int quantity = Integer.parseInt(txtQuantity.getText());
+                    String note = txtNote.getText();
 
-            // 2. Gọi Controller
-            boolean success = productController.updateProduct(id, name, unit, price, quantity, note);
+                    // 2. Gọi Controller
+                    boolean success = productController.updateProduct(id, name, unit, price, quantity, note);
 
-            // 3. Xử lý kết quả
-            if (success) {
-                JOptionPane.showMessageDialog(ProductManagementView.this,
-                    "Cập nhật sản phẩm thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
-                loadProductData(); // Tải lại bảng
-                clearForm();       // Xóa form
-            } else {
-                JOptionPane.showMessageDialog(ProductManagementView.this,
-                    "Cập nhật sản phẩm thất bại. (Tên và Giá là bắt buộc, Giá > 0)",
-                    "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
+                    // 3. Xử lý kết quả
+                    if (success) {
+                        JOptionPane.showMessageDialog(ProductManagementView.this, 
+                                "Cập nhật sản phẩm thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
+                        loadProductData(); // Tải lại bảng
+                        clearForm();       // Xóa form
+                    } else {
+                        JOptionPane.showMessageDialog(ProductManagementView.this, 
+                                "Cập nhật sản phẩm thất bại. (Tên và Giá là bắt buộc, Giá > 0)", 
+                                "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    }
 
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(ProductManagementView.this,
-                "ID, Giá và Số lượng phải là số hợp lệ.",
-                "Lỗi Định Dạng", JOptionPane.ERROR_MESSAGE);
-        }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(ProductManagementView.this, 
+                            "ID, Giá và Số lượng phải là số hợp lệ.", 
+                            "Lỗi Định Dạng", JOptionPane.ERROR_MESSAGE);
+                }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         try {
-            int id = Integer.parseInt(txtId.getText()); // Lấy ID từ form
+                    int id = Integer.parseInt(txtId.getText()); // Lấy ID từ form
 
-            // 1. Yêu cầu xác nhận trước khi xóa
-            int confirm = JOptionPane.showConfirmDialog(ProductManagementView.this,
-                "Bạn có chắc chắn muốn xóa sản phẩm này? (ID: " + id + ")",
-                "Xác Nhận Xóa",
-                JOptionPane.YES_NO_OPTION);
+                    // 1. Yêu cầu xác nhận trước khi xóa
+                    int confirm = JOptionPane.showConfirmDialog(ProductManagementView.this,
+                            "Bạn có chắc chắn muốn xóa sản phẩm này? (ID: " + id + ")",
+                            "Xác Nhận Xóa",
+                            JOptionPane.YES_NO_OPTION);
 
-            if (confirm == JOptionPane.YES_OPTION) {
-                // 2. Gọi Controller
-                boolean success = productController.deleteProduct(id);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        // 2. Gọi Controller
+                        boolean success = productController.deleteProduct(id);
 
-                // 3. Xử lý kết quả
-                if (success) {
-                    JOptionPane.showMessageDialog(ProductManagementView.this,
-                        "Xóa sản phẩm thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
-                    loadProductData();
-                    clearForm();
-                } else {
-                    // Lý do thất bại phổ biến là do ràng buộc khóa ngoại
-                    // (sản phẩm đã có trong một đơn hàng nào đó)
-                    JOptionPane.showMessageDialog(ProductManagementView.this,
-                        "Xóa sản phẩm thất bại. (Có thể sản phẩm đã tồn tại trong một đơn hàng).",
-                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        // 3. Xử lý kết quả
+                        if (success) {
+                            JOptionPane.showMessageDialog(ProductManagementView.this, 
+                                    "Xóa sản phẩm thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
+                            loadProductData();
+                            clearForm();
+                        } else {
+                            // Lý do thất bại phổ biến là do ràng buộc khóa ngoại
+                            // (sản phẩm đã có trong một đơn hàng nào đó)
+                            JOptionPane.showMessageDialog(ProductManagementView.this, 
+                                    "Xóa sản phẩm thất bại. (Có thể sản phẩm đã tồn tại trong một đơn hàng).", 
+                                    "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(ProductManagementView.this, 
+                            "ID sản phẩm không hợp lệ.", 
+                            "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
-            }
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(ProductManagementView.this,
-                "ID sản phẩm không hợp lệ.",
-                "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
     }//GEN-LAST:event_btnDeleteActionPerformed
-
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
-        clearForm();
-    }//GEN-LAST:event_btnClearActionPerformed
 
     /**
      * @param args the command line arguments
