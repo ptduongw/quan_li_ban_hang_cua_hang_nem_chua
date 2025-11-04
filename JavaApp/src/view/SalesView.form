@@ -49,13 +49,12 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <Component id="txtSearchProduct" min="-2" pref="71" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" min="-2" pref="452" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jScrollPane2" min="-2" pref="452" max="-2" attributes="0"/>
+                      <Component id="txtSearchProduct" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -76,6 +75,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="S&#x1ea2;N PH&#x1ea8;M"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSearchProductActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane2">
           <AuxValues>
@@ -114,7 +116,7 @@
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="btnFindCustomer" max="32767" attributes="0"/>
                               <Component id="lblTotalAmount" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtCustomerName" alignment="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="txtCustomerName" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtCustomerPhone" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnPay" alignment="0" max="32767" attributes="0"/>
                           </Group>
