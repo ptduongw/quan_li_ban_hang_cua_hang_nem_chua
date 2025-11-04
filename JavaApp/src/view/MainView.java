@@ -64,6 +64,11 @@ public class MainView extends javax.swing.JFrame {
         });
 
         btnOpenProfitReport.setText("BÁO CÁO");
+        btnOpenProfitReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenProfitReportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -137,6 +142,13 @@ public class MainView extends javax.swing.JFrame {
         customerView.setVisible(true);
         customerView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_btnOpenCustomerManagementActionPerformed
+
+    private void btnOpenProfitReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenProfitReportActionPerformed
+        // TODO add your handling code here:
+        ProfitView profitView = new ProfitView();
+        profitView.setVisible(true);
+        profitView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_btnOpenProfitReportActionPerformed
 
     /**
      * @param args the command line arguments

@@ -113,6 +113,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="B&#xc1;O C&#xc1;O"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOpenProfitReportActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
