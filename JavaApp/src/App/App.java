@@ -1,11 +1,13 @@
 package App;
 
 import javax.swing.SwingUtilities;
-import view.MainView; // Import lop MainView tu goi 'view'
+import view.MainView; // <<< IMPORT FILE CHINH (Cua so chinh)
+// import view.SalesView; // (Chung ta se mo SalesView tu MainView)
 
 /**
  * Lop nay la DIEM KHOI DAU (main entry point) cua toan bo ung dung.
  * Nhiem vu duy nhat cua no la tao va hien thi cua so chinh (MainView).
+ * (File nay khong dau de tranh loi font)
  */
 public class App {
 
@@ -15,7 +17,7 @@ public class App {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                // Tao mot doi tuong MainView moi va cho no hien thi
+                // <<< CHAY CUA SO CHINH (MAINVIEW) >>>
                 new MainView().setVisible(true);
             }
         });

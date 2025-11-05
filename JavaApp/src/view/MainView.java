@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package view;
+import javax.swing.JFrame; // De sua loi DISPOSE_ON_CLOSE
 
 /**
  *
@@ -28,21 +29,126 @@ public class MainView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        btnOpenSalesView = new javax.swing.JButton();
+        btnOpenProductManagement = new javax.swing.JButton();
+        btnOpenCustomerManagement = new javax.swing.JButton();
+        btnOpenProfitReport = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setText("CHỌN CHỨC NĂNG");
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        btnOpenSalesView.setText("BÁN HÀNG");
+        btnOpenSalesView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenSalesViewActionPerformed(evt);
+            }
+        });
+
+        btnOpenProductManagement.setText("QUẢN LÝ SẢN PHẨM");
+        btnOpenProductManagement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenProductManagementActionPerformed(evt);
+            }
+        });
+
+        btnOpenCustomerManagement.setText("QUẢN LÝ KHÁCH HÀNG");
+        btnOpenCustomerManagement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenCustomerManagementActionPerformed(evt);
+            }
+        });
+
+        btnOpenProfitReport.setText("BÁO CÁO");
+        btnOpenProfitReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenProfitReportActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnOpenCustomerManagement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnOpenSalesView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnOpenProductManagement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnOpenProfitReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(btnOpenSalesView)
+                .addGap(12, 12, 12)
+                .addComponent(btnOpenProductManagement)
+                .addGap(12, 12, 12)
+                .addComponent(btnOpenCustomerManagement)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnOpenProfitReport)
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(80, 80, 80)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(84, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnOpenSalesViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenSalesViewActionPerformed
+        // TODO add your handling code here:
+        // (Code khong dau de tranh loi font)
+        SalesView salesView = new SalesView();
+        salesView.setVisible(true);
+        // Quan trong: Thiet lap khi dong cua so con:
+        salesView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_btnOpenSalesViewActionPerformed
+
+    private void btnOpenProductManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenProductManagementActionPerformed
+        // TODO add your handling code here:
+        // (Code khong dau de tranh loi font)
+        ProductManagementView productView = new ProductManagementView();
+        productView.setVisible(true);
+        // Quan trong: Thiet lap khi dong cua so con:
+        productView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_btnOpenProductManagementActionPerformed
+
+    private void btnOpenCustomerManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenCustomerManagementActionPerformed
+        // TODO add your handling code here:
+        CustomerManagementView customerView = new CustomerManagementView();
+        customerView.setVisible(true);
+        customerView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_btnOpenCustomerManagementActionPerformed
+
+    private void btnOpenProfitReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenProfitReportActionPerformed
+        // TODO add your handling code here:
+        ProfitView profitView = new ProfitView();
+        profitView.setVisible(true);
+        profitView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_btnOpenProfitReportActionPerformed
 
     /**
      * @param args the command line arguments
@@ -70,5 +176,11 @@ public class MainView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnOpenCustomerManagement;
+    private javax.swing.JButton btnOpenProductManagement;
+    private javax.swing.JButton btnOpenProfitReport;
+    private javax.swing.JButton btnOpenSalesView;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

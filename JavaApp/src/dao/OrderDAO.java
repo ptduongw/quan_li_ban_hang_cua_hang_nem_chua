@@ -8,13 +8,9 @@ import java.sql.Statement;
 import java.util.List;
 import model.Order;
 import model.OrderDetail;
-import model.Product; // Cần import Product để cập nhật tồn kho
+import model.Product; 
 import utils.DatabaseConnector;
 
-/**
- * Lớp này xử lý việc thêm đơn hàng (Order) và chi tiết đơn hàng (OrderDetail)
- * vào database, đồng thời cập nhật số lượng tồn kho của sản phẩm.
- */
 public class OrderDAO {
 
     /**
@@ -24,6 +20,7 @@ public class OrderDAO {
      * @param order Đối tượng Order chứa thông tin đơn hàng và danh sách OrderDetail.
      * @return ID của đơn hàng vừa được tạo, hoặc -1 nếu thất bại.
      */
+    //Thêm đơn hàng
     public int addOrder(Order order) {
         Connection conn = null;
         PreparedStatement psOrder = null;
@@ -32,12 +29,12 @@ public class OrderDAO {
         ResultSet generatedKeys = null;
         int orderId = -1;
 
-        // Câu SQL để thêm vào bảng order_table (đã đổi tên)
+        //Thêm đơn hàng vào bảng order_table
         String sqlOrder = "INSERT INTO order_table (customer_id, order_date, total_amount) VALUES (?, ?, ?)";
-        // Câu SQL để thêm vào bảng order_detail (đã đổi tên cột sale_price)
+        //Thêm chi tiết đơn hàng vào bảng order_detail
         String sqlDetail = "INSERT INTO order_detail (order_id, product_id, quantity, sale_price) VALUES (?, ?, ?, ?)";
-        // Câu SQL để cập nhật tồn kho trong bảng product (đã đổi tên cột quantity)
-        String sqlUpdateStock = "UPDATE product SET quantity = quantity - ? WHERE id = ? AND quantity >= ?"; // Đảm bảo không âm kho
+        //Cập nhật số lượng sản phẩm trong kho
+        String sqlUpdateStock = "UPDATE product SET quantity = quantity - ? WHERE id = ? AND quantity >= ?"; 
 
         try {
             conn = DatabaseConnector.getConnection();
@@ -49,27 +46,27 @@ public class OrderDAO {
             // --- BẮT ĐẦU TRANSACTION ---
             conn.setAutoCommit(false); // Tắt tự động commit
 
-            // 1. Thêm Order vào bảng order_table
+            //1.Thêm dữ liệu vào bảng order_table
             psOrder = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
-            // Cho phép customer_id là NULL nếu khách lẻ (hoặc ID = 0)
+          
             if (order.getCustomerId() > 0) {
                  psOrder.setInt(1, order.getCustomerId());
             } else {
-                 psOrder.setNull(1, java.sql.Types.INTEGER); // Đặt là NULL nếu customerId <= 0
+                 psOrder.setNull(1, java.sql.Types.INTEGER); //customerId = Null cho khách lần đầu mua
             }
-            // Lấy ngày hiện tại nếu orderDate là null, ngược lại dùng ngày trong order
+            //Ghi lại ngày đặt hàng
             psOrder.setTimestamp(2, new java.sql.Timestamp(order.getOrderDate() != null ? order.getOrderDate().getTime() : System.currentTimeMillis()));
             psOrder.setDouble(3, order.getTotalAmount());
 
             int affectedRowsOrder = psOrder.executeUpdate();
 
             if (affectedRowsOrder == 0) {
-                conn.rollback(); // Hoàn tác nếu không thêm được order
+                conn.rollback(); //Hoàn tác nếu không thêm được order
                 System.err.println("Lỗi: Không thể thêm Order vào order_table.");
                 return -1;
             }
 
-            // Lấy ID của Order vừa tạo
+            //Lấy ID của Order vừa tạo
             generatedKeys = psOrder.getGeneratedKeys();
             if (generatedKeys.next()) {
                 orderId = generatedKeys.getInt(1);
@@ -79,67 +76,66 @@ public class OrderDAO {
                 return -1;
             }
 
-            // Kiểm tra xem có chi tiết đơn hàng không
+            //Kiểm tra xem có chi tiết sanr phẩm đơn hàng không
             if (order.getDetails() == null || order.getDetails().isEmpty()) {
                  conn.rollback();
                  System.err.println("Lỗi: Đơn hàng không có chi tiết sản phẩm nào.");
                  return -1;
             }
 
-            // 2. Thêm các OrderDetail vào bảng order_detail (dùng batch)
+            //2.Thêm đơn hàng đã thanh toán vào bảng order_detail
             psDetail = conn.prepareStatement(sqlDetail);
             for (OrderDetail detail : order.getDetails()) {
-                 if(detail.getQuantity() <= 0) { // Bỏ qua nếu số lượng <= 0
+                 if(detail.getQuantity() <= 0) { 
                      continue;
                  }
-                psDetail.setInt(1, orderId); // Dùng orderId vừa lấy được
+                psDetail.setInt(1, orderId); //Dùng orderId vừa lấy được
                 psDetail.setInt(2, detail.getProductId());
                 psDetail.setInt(3, detail.getQuantity());
                 psDetail.setDouble(4, detail.getSalePrice());
-                psDetail.addBatch(); // Thêm vào lô để thực thi cùng lúc
+                psDetail.addBatch(); //Thêm vào lô để thực thi cùng lúc
             }
-            int[] affectedRowsDetails = psDetail.executeBatch(); // Thực thi lô lệnh INSERT detail
+            
+            //Thực thi lô lệnh INSERT detail
+            int[] affectedRowsDetails = psDetail.executeBatch(); 
 
-            // Kiểm tra xem tất cả detail có được thêm thành công không
+            //Kiểm tra xem có chi tiết nào bị lỗi không
             for (int result : affectedRowsDetails) {
                 if (result == Statement.EXECUTE_FAILED) {
                     conn.rollback();
                     System.err.println("Lỗi: Không thể thêm một hoặc nhiều OrderDetail.");
                     return -1;
                 }
-                 // Lưu ý: Nếu không có detail nào được addBatch (do quantity <= 0), mảng này sẽ rỗng
             }
+            
             if (affectedRowsDetails.length == 0 && order.getDetails().stream().anyMatch(d -> d.getQuantity() > 0)) {
-                // Trường hợp lạ: Có detail hợp lệ nhưng không add được batch?
                  conn.rollback();
                  System.err.println("Lỗi: Không thể thực thi batch cho OrderDetail.");
                  return -1;
             }
 
 
-            // 3. Cập nhật số lượng tồn kho (quantity) trong bảng product (dùng batch)
+            //3.Cập nhật số lượng tồn kho sản phẩm trong bảng product
             psUpdateStock = conn.prepareStatement(sqlUpdateStock);
             boolean stockUpdateNeeded = false;
             for (OrderDetail detail : order.getDetails()) {
-                 if(detail.getQuantity() <= 0) { // Bỏ qua nếu số lượng <= 0
+                 if(detail.getQuantity() <= 0) { 
                      continue;
                  }
-                psUpdateStock.setInt(1, detail.getQuantity()); // Số lượng cần trừ
-                psUpdateStock.setInt(2, detail.getProductId());// ID sản phẩm
-                psUpdateStock.setInt(3, detail.getQuantity()); // Điều kiện: tồn kho phải >= số lượng bán
+                psUpdateStock.setInt(1, detail.getQuantity()); 
+                psUpdateStock.setInt(2, detail.getProductId());
+                psUpdateStock.setInt(3, detail.getQuantity()); 
                 psUpdateStock.addBatch();
                 stockUpdateNeeded = true;
             }
-            if (stockUpdateNeeded) { // Chỉ chạy batch nếu có ít nhất 1 detail cần cập nhật kho
-                 int[] affectedRowsStock = psUpdateStock.executeBatch(); // Thực thi lô lệnh UPDATE stock
-
-                 // Kiểm tra xem tất cả cập nhật tồn kho có thành công không
-                 // (Nếu không đủ hàng, executeBatch có thể trả về 0 cho dòng đó)
+            if (stockUpdateNeeded) { 
+                 int[] affectedRowsStock = psUpdateStock.executeBatch(); 
+                 //Kiểm tra xem tất cả cập nhật tồn kho có thành công không             
                  for (int i = 0; i < affectedRowsStock.length; i++) {
                     // Tìm lại detail tương ứng (chỉ xét những detail có quantity > 0)
                      OrderDetail correspondingDetail = order.getDetails().stream()
                                                             .filter(d -> d.getQuantity() > 0)
-                                                            .skip(i) // Bỏ qua i phần tử đầu
+                                                            .skip(i)
                                                             .findFirst()
                                                             .orElse(null);
                      int productIdToCheck = (correspondingDetail != null) ? correspondingDetail.getProductId() : -1;
