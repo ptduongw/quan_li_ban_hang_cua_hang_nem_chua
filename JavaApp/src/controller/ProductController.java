@@ -1,29 +1,74 @@
-// BẮT BUỘC: Dòng này phải là dòng đầu tiên
 package controller;
 
-// Import các lớp mà controller này sẽ cần
 import dao.ProductDAO;
-// (Sau này chúng ta sẽ cần import model.Product, java.util.List...)
-// import model.Product;
-// import java.util.List;
+import model.Product;
+import java.util.List;
 
-/**
- * Lớp này là bộ não xử lý logic cho Quản lý Sản phẩm.
- * (Hiện tại chỉ cần khai báo lớp để hết lỗi build)
- */
 public class ProductController {
-    
-    // Controller sẽ cần một đối tượng DAO để truy cập CSDL
+
     private ProductDAO productDAO;
 
     public ProductController() {
-        // Khởi tạo đối tượng DAO khi Controller được tạo ra
         this.productDAO = new ProductDAO();
     }
 
-    // (Các hàm logic như lấy danh sách sản phẩm, thêm, sửa, xóa sẽ ở đây)
-    // public List<Product> getAllProducts() {
-    //     return this.productDAO.getAllProducts();
-    // }
+    public List<Product> getAllProducts() {
+        return productDAO.getAllProducts();
+    }
+ 
+    public Product getProductById(int id) {
+        return productDAO.getProductById(id);
+    }
+
+
+    public int addProduct(String name, String unit, double price, int quantity, String note) {
+        //Kiem tra du lieu dau vao
+        if (name == null || name.trim().isEmpty()) {
+            System.err.println("Loi Controller: Ten san pham khong duoc de trong.");
+            return -1; 
+        }
+        if (price <= 0) {
+            System.err.println("Loi Controller: Gia san pham phai lon hon 0.");
+            return -1;
+        }
+        if (quantity < 0) {
+            System.err.println("Loi Controller: So luong khong duoc la so am.");
+            return -1;
+        }
+        
+        Product product = new Product(name.trim(), unit, price, quantity, note);
+        
+        //Lưu
+        return productDAO.addProduct(product);
+    }
+
+    public boolean updateProduct(int id, String name, String unit, double price, int quantity, String note) {
+         //Kiem tra du lieu dau vao
+         if (id <= 0) {
+             System.err.println("Loi Controller: ID san pham khong hop le.");
+             return false;
+         }
+        if (name == null || name.trim().isEmpty()) {
+            System.err.println("Loi Controller: Ten san pham khong duoc de trong.");
+            return false;
+        }
+        if (price <= 0) {
+            System.err.println("Loi Controller: Gia san pham phai lon hon 0.");
+            return false;
+        }
+        
+        Product product = new Product(id, name.trim(), unit, price, quantity, note);
+        
+        //Lưu
+        return productDAO.updateProduct(product);
+    }
+
+    public boolean deleteProduct(int id) {
+        if (id <= 0) {
+             System.err.println("Loi Controller: ID san pham khong hop le.");
+            return false;
+        }
+        return productDAO.deleteProduct(id);
+    }
 }
 
